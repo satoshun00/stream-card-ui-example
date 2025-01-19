@@ -2,6 +2,7 @@
 
 import { useMemo, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { MonsterCard } from "@/components/monster-card"
 import { DebugMessages } from "@/components/debug-messages"
 import { motion, AnimatePresence } from "framer-motion"
@@ -10,8 +11,10 @@ import { cardsSchema } from './api/cards/schema';
 
 export default function CardDrawPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [keyword, setKeyword] = useState<string>("")
   const { object, submit, isLoading } = useObject({
     api: '/api/cards',
+    headers: { 'Content-Type': 'application/json'},
     schema: cardsSchema,
     onFinish: () => {
       setIsSubmitting(false)
@@ -20,12 +23,12 @@ export default function CardDrawPage() {
   const [debugMessages, setDebugMessages] = useState<string[]>([])
 
   const addDebugMessage = (message: string) => {
-    setDebugMessages(prev => [...prev, `[${new Date().toISOString()}] ${message}`])
+    setDebugMessages(prev => [`[${new Date().toISOString()}] ${message}`, ...prev])
   }
 
   const handleDraw = () => {
     setIsSubmitting(true);
-    submit('');
+    submit({ keyword });
   }
 
   useEffect(() => {
@@ -47,12 +50,20 @@ export default function CardDrawPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <Input
+            type="text"
+            placeholder="キーワードを入力"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className="max-w-xs"
+            disabled={isLoading}
+          />
           <Button
             size="lg"
-            disabled={isLoading}
             onClick={handleDraw}
-            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all"
+            disabled={isLoading}
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "抽選中..." : "抽選する"}
           </Button>

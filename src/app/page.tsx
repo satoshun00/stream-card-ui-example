@@ -12,15 +12,19 @@ import { cardsSchema } from './api/cards/schema';
 export default function CardDrawPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [keyword, setKeyword] = useState<string>("")
+  const [debugMessages, setDebugMessages] = useState<string[]>([])
   const { object, submit, isLoading } = useObject({
     api: '/api/cards',
     headers: { 'Content-Type': 'application/json'},
     schema: cardsSchema,
-    onFinish: () => {
+    onFinish: ({ error }) => {
       setIsSubmitting(false)
+      if (error) {
+        console.error("AIのレスポンスがスキーマに一致していません", error)
+        setDebugMessages(prev => [`[${new Date().toISOString()}] AIのレスポンスがスキーマに一致していません ${error.message}`, ...prev])
+      }
     },
   });
-  const [debugMessages, setDebugMessages] = useState<string[]>([])
 
   const addDebugMessage = (message: string) => {
     setDebugMessages(prev => [`[${new Date().toISOString()}] ${message}`, ...prev])

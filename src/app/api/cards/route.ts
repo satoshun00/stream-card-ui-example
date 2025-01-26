@@ -11,12 +11,12 @@ export async function POST(req: Request): Promise<Response> {
       `## 指示
 モンスターをランダムに5つ生成してください。
 はじめに入力のキーワードにあったコンセプトを決めてから、それにあったモンスターを5つ生成します。
-コンセプトはアドベンチャーゲームとしてキャッチーなコンセプトを考えてください。
+コンセプトはアドベンチャーゲームとして面白そうなコンセプトを考えてください。
 
 ## ルール
 * モンスターは5体生成します
 * 言語は必ず日本語で生成してください
-* カードのimageフィールドには以下の画像URLを使用してください。使用する順番はランダムにしてください
+* カードのimageフィールドには以下の画像URLを使用してください。
     * /images/daniel-vargas-c-ewKs54sw4-unsplash.jpg
     * /images/gene-taylor-JWlY4Z4_mCI-unsplash.jpg
     * /images/joel-herzog-ny_5l4QKBnE-unsplash.jpg

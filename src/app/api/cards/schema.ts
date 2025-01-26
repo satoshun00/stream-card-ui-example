@@ -2,8 +2,8 @@ import type { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 export const cardSchema = z.object({
     name: z.string().describe('モンスターの名前'),
-    image: z.string().url().describe('モンスターの画像URL'),
-    hp: z.number().describe('モンスターのHP'),
+    image: z.string().describe('モンスターの画像URL'),
+    hp: z.number().min(10).max(200).describe('モンスターのHP'),
     color: z.enum(['red', 'blue', 'green', 'yellow']).describe('モンスターの属性'),
     move: z.object({
         name: z.string().describe('技の名前'),
